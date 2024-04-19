@@ -17,7 +17,9 @@ class ChatController extends Controller
     {
         $users = User::where('id', '!=', auth()->id())->get();
         $users = UserResource::collection($users)->resolve();
-        return inertia('Chat/Index', compact('users'));
+        $chats = auth()->user()->chats()->get();
+        $chats = ChatResource::collection($chats)->resolve();
+        return inertia('Chat/Index', compact('users', 'chats'));
     }
 
     public function store(StoreRequest $request) 
@@ -43,6 +45,11 @@ class ChatController extends Controller
             DB::rollBack();
         }
 
+        $chat = ChatResource::make($chat)->resolve();
+        return inertia('Chat/Show', compact('chat'));
+    }
+
+    public function show(Chat $chat) {
         $chat = ChatResource::make($chat)->resolve();
         return inertia('Chat/Show', compact('chat'));
     }
