@@ -27,7 +27,7 @@ class MessageController extends Controller
             foreach($data['user_ids'] as $userId) {
                 MessageStatus::create([
                     'chat_id' => $data['chat_id'],
-                    'message_id' => $message->id(),
+                    'message_id' => $message->id,
                     'user_id' => $userId,
                 ]);
             };
